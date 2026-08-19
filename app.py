@@ -14,7 +14,7 @@ st.markdown("Sube una imagen o toma una foto para identificar el objeto usando u
 # Cargar el modelo entrenado
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model('modelo_cifar10.h5')
+    return tf.keras.models.load_model('modelo_cifar10.keras')
 
 try:
     model = load_model()
