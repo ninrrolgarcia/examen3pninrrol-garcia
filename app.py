@@ -1,7 +1,7 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 from PIL import Image
+import tf_keras as keras
 
 # Configuración de la página
 st.set_page_config(page_title="Clasificador de Objetos IA", page_icon="🖼️", layout="centered")
@@ -14,12 +14,12 @@ st.markdown("Sube una imagen o toma una foto para identificar el objeto usando u
 # Cargar el modelo entrenado
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model('modelo_cifar10.h5')
+    return keras.models.load_model('modelo_cifar10.h5')
 
 try:
     model = load_model()
 except Exception as e:
-    st.error("No se encontró el archivo del modelo 'modelo_cifar10.h5'. Asegúrate de haberlo entrenado primero.")
+    st.error("No se pudo cargar el modelo. Verifica que 'modelo_cifar10.h5' esté en la raíz del repositorio.")
     st.stop()
 
 # Clases de CIFAR-10 traducidas al español
