@@ -1,8 +1,8 @@
 import os
+import keras
 import numpy as np
 from PIL import Image
 import streamlit as st
-import tensorflow as tf
 
 # Configuración de la página
 st.set_page_config(
@@ -17,16 +17,15 @@ st.markdown(
 )
 
 
-# Cargar el modelo entrenado
+# Cargar el modelo entrenado usando Keras 3
 @st.cache_resource
 def load_model():
-  # Buscar si existe .keras o .h5
   if os.path.exists("modelo_cifar10.keras"):
-    return tf.keras.models.load_model("modelo_cifar10.keras")
+    return keras.models.load_model("modelo_cifar10.keras")
   elif os.path.exists("modelo_cifar10.h5"):
-    return tf.keras.models.load_model("modelo_cifar10.h5")
+    return keras.models.load_model("modelo_cifar10.h5")
   else:
-    raise FileNotFoundError("Archivo de modelo no encontrado en el servidor.")
+    raise FileNotFoundError("Archivo de modelo no encontrado.")
 
 
 try:
@@ -34,7 +33,6 @@ try:
   st.success("✅ Modelo cargado correctamente.")
 except Exception as e:
   st.error(f"Error al cargar el modelo: {e}")
-  st.info(f"📁 Archivos detectados en la raíz: {os.listdir('.')}")
   st.stop()
 
 # Clases de CIFAR-10 traducidas al español
