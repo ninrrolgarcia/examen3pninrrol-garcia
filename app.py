@@ -1,26 +1,41 @@
-import streamlit as st
-import tensorflow as tf
+import os
 import numpy as np
 from PIL import Image
+import streamlit as st
+import tensorflow as tf
 
 # Configuración de la página
-st.set_page_config(page_title="Clasificador de Objetos IA", page_icon="🖼️", layout="centered")
+st.set_page_config(
+    page_title="Clasificador de Objetos IA", page_icon="🖼️", layout="centered"
+)
 
-# Nombre del estudiante / desarrollador
 st.title("🖼️ Clasificador de Objetos IA")
 st.caption("Desarrollado por: **Ninrrol García**")
-st.markdown("Sube una imagen o toma una foto para identificar el objeto usando un modelo de Machine Learning (CIFAR-10).")
+st.markdown(
+    "Sube una imagen o toma una foto para identificar el objeto usando un"
+    " modelo de Machine Learning (CIFAR-10)."
+)
+
 
 # Cargar el modelo entrenado
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model('modelo_cifar10.keras')
+  # Buscar si existe .keras o .h5
+  if os.path.exists("modelo_cifar10.keras"):
+    return tf.keras.models.load_model("modelo_cifar10.keras")
+  elif os.path.exists("modelo_cifar10.h5"):
+    return tf.keras.models.load_model("modelo_cifar10.h5")
+  else:
+    raise FileNotFoundError("Archivo de modelo no encontrado en el servidor.")
+
 
 try:
-    model = load_model()
+  model = load_model()
+  st.success("✅ Modelo cargado correctamente.")
 except Exception as e:
-    st.error("No se pudo cargar el modelo. Verifica que 'modelo_cifar10.h5' esté en la raíz del repositorio.")
-    st.stop()
+  st.error(f"Error al cargar el modelo: {e}")
+  st.info(f"📁 Archivos detectados en la raíz: {os.listdir('.')}")
+  st.stop()
 
 # Clases de CIFAR-10 traducidas al español
 CLASSES = [
