@@ -1,4 +1,7 @@
 import os
+
+os.environ['KERAS_BACKEND'] = 'tensorflow'  # <-- ¡Importante ponerlo arriba!
+
 import keras
 import numpy as np
 from PIL import Image
@@ -17,7 +20,7 @@ st.markdown(
 )
 
 
-# Cargar el modelo entrenado usando Keras 3
+# Cargar el modelo
 @st.cache_resource
 def load_model():
   if os.path.exists("modelo_cifar10.keras"):
@@ -25,7 +28,7 @@ def load_model():
   elif os.path.exists("modelo_cifar10.h5"):
     return keras.models.load_model("modelo_cifar10.h5")
   else:
-    raise FileNotFoundError("Archivo de modelo no encontrado.")
+    raise FileNotFoundError("Archivo del modelo no encontrado.")
 
 
 try:
